@@ -1,0 +1,24 @@
+server:
+  port: 8005
+spring:
+  application:
+    name: gateway
+  cloud:
+    consul:
+      port: 8500
+      host: localhost
+      discovery:
+        service-name: ${spring.application.name}
+    gateway:
+      routes:
+        - id: user_route
+          uri: lb://users
+          predicates:
+            - Path=/**
+        - id: product_route
+          uri: lb://products
+          predicates:
+            - Path=/product/**
+      discovery:
+        locator:
+          enabled: true
